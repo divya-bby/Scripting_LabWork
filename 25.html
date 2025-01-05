@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Person Account</title>
+</head>
+<body>
+  <h1>Person Account</h1>
+
+  <script>
+    
+    const personAccount = {
+      
+      firstName: "Divya",
+      lastName: "Adhikari",
+      incomes: [
+        { amount: 1000, description: "Salary" },
+        { amount: 500, description: "Freelance Work" }
+      ],
+      expenses: [
+        { amount: 200, description: "Rent" },
+        { amount: 100, description: "Groceries" }
+      ],
+
+      
+      totalIncome: function() {
+        return this.incomes.reduce((total, income) => total + income.amount, 0);
+      },
+
+      
+      totalExpense: function() {
+        return this.expenses.reduce((total, expense) => total + expense.amount, 0);
+      },
+
+      
+      accountInfo: function() {
+        return `Account Holder: ${this.firstName} ${this.lastName}\nTotal Income: $${this.totalIncome()}\nTotal Expenses: $${this.totalExpense()}\nAccount Balance: $${this.accountBalance()}`;
+      },
+
+      
+      addIncome: function(amount, description) {
+        this.incomes.push({ amount, description });
+      },
+
+     
+      addExpense: function(amount, description) {
+        this.expenses.push({ amount, description });
+      },
+
+      
+      accountBalance: function() {
+        return this.totalIncome() - this.totalExpense();
+      }
+    };
+
+    
+    console.log(personAccount.accountInfo());
+
+    
+    personAccount.addIncome(300, "Bonus");
+
+    
+    personAccount.addExpense(50, "Transport");
+
+   
+    console.log(personAccount.accountInfo());
+
+  </script>
+</body>
+</html>
