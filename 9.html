@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+$(document).ready(function() {
+    $('#registrationForm').submit(function(e) {
+        e.preventDefault();
+        let valid = true;
+
+        const name = $('#name').val();
+        if (!name || /\d/.test(name)) {
+            $('#nameError').text("Name is required and should not contain numbers.");
+            valid = false;
+        } else {
+            $('#nameError').text("");
+        }
+
+        const username = $('#username').val();
+        if (!username || /[^a-zA-Z0-9_]/.test(username)) {
+            $('#usernameError').text("Username is required and can only contain letters, numbers, and underscores.");
+            valid = false;
+        } else {
+            $('#usernameError').text("");
+        }
+
+        if (!$('input[name="gender"]:checked').val()) {
+            $('#genderError').text("Please select a gender.");
+            valid = false;
+        } else {
+            $('#genderError').text("");
+        }
+
+        const email = $('#email').val();
+        if (!email || !/\S+@\S+\.\S+/.test(email)) {
+            $('#emailError').text("Please enter a valid email.");
+            valid = false;
+        } else {
+            $('#emailError').text("");
+        }
+
+        const password = $('#password').val();
+        const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        if (!password || !passwordRegex.test(password)) {
+            $('#passwordError').text("Password must be at least 8 characters with at least one uppercase letter, one lowercase letter, one number, and one special character.");
+            valid = false;
+        } else {
+            $('#passwordError').text("");
+        }
+
+        if ($('#course').val() === "") {
+            $('#courseError').text("Please select a course.");
+            valid = false;
+        } else {
+            $('#courseError').text("");
+        }
+
+        if (valid) {
+            alert("Form Submitted Successfully!");
+        }
+    });
+});
+</script>
+</head>
+<body>
+    <form id="registrationForm">
+        <label>Name: <input type="text" id="name" ></label><br>
+        <span id="nameError" style="color:red;"></span><br>
+        
+        <label>Username: <input type="text" id="username" ></label><br>
+        <span id="usernameError" style="color:red;"></span><br>
+
+        <label>Email: <input type="email" id="email" ></label><br>
+        <span id="emailError" style="color:red;"></span><br>
+
+        <label>Phone: <input type="text" id="phone" ></label><br>
+        <span id="phoneError" style="color:red;"></span><br>
+
+        <label>Password: <input type="password" id="password" ></label><br>
+        <span id="passwordError" style="color:red;"></span><br>
+
+        <label>Gender: 
+            <input type="radio" name="gender" value="Male"> Male
+            <input type="radio" name="gender" value="Female"> Female
+        </label><br>
+        <span id="genderError" style="color:red;"></span><br>
+
+        <label>Course: 
+            <select id="course">
+                <option value="">Select a course</option>
+                <option value="BCA">BCA</option>
+                <option value="MCA">MCA</option>
+            </select>
+        </label><br>
+        <span id="courseError" style="color:red;"></span><br>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

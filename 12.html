@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        img {
+            width: 80px;
+            height: auto;
+        }
+        .error {
+            color: red;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Movies List</h1>
+
+    <div class="error" id="error"></div>
+
+    <table id="moviesTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Poster</th>
+                <th>Year</th>
+                <th>Genre</th>
+                <th>Rating</th>
+                <th>Director</th>
+                <th>Country</th>
+                <th>Language</th>
+                <th>Actors</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        function fetchMovies() {
+            const xhr = new XMLHttpRequest();
+            const url = 'https://api.allorigins.win/raw?url=https://freetestapi.com/api/v1/movies';
+
+
+            
+            xhr.open('GET', url, true);
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    try {
+                        const movies = JSON.parse(xhr.responseText); 
+                        
+                        if (!Array.isArray(movies)) {
+                            document.getElementById('error').innerText = 'Invalid data format from API.';
+                            return;
+                        }
+
+                        const tableBody = document.getElementById('moviesTable').getElementsByTagName('tbody')[0];
+                        tableBody.innerHTML = ''; 
+
+                        movies.forEach(function(movie) {
+                            const row = document.createElement('tr');
+
+                            row.innerHTML = `
+                                <td>${movie.id}</td>
+                                <td>${movie.title}</td>
+                                <td><img src="${movie.poster}" alt="Poster"></td>
+                                <td>${movie.year}</td>
+                                <td>${movie.genre}</td>
+                                <td>${movie.rating}</td>
+                                <td>${movie.director}</td>
+                                <td>${movie.country}</td>
+                                <td>${movie.language}</td>
+                                <td>${movie.actors}</td>
+                            `;
+
+                            tableBody.appendChild(row);
+                        });
+                    } catch (error) {
+                        document.getElementById('error').innerText = 'Error parsing API response.';
+                        console.error(error);
+                    }
+                } else {
+                    document.getElementById('error').innerText = 'Failed to fetch movies. Status: ' + xhr.status;
+                }
+            };
+
+            xhr.onerror = function() {
+                document.getElementById('error').innerText = 'Error while making the request.';
+            };
+
+            xhr.send();
+        }
+
+        window.onload = fetchMovies;
+    </script>
+</body>
+</html>
